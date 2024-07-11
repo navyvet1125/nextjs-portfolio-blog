@@ -22,6 +22,9 @@ const header = () => {
           <li className='ml-4'>
             <Link href='#contact' className='text-white p-2 border-blue-500 hover:border hover:border-white'>Contact</Link>
           </li>
+          <li className='ml-4'>
+            <Link href='/api/auth/signin' className='text-white p-2 border-blue-500 hover:border hover:border-white'>Sign In</Link>
+          </li>
         </ul>
       </nav>
     </header>
