@@ -1,11 +1,17 @@
 'use client'
+import axios from 'axios'
 import React, { useState } from 'react'
 import { BlogPost } from '@/types/blog'
+import { useRouter } from 'next/navigation'
+// import { useSession } from 'next-auth/react'
 
 const inputStyles ='w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300 focus:ring-blue-200 focus:ring-opacity-50 text-black'
 
 const FormNewPost = () => {
   const [post, setPost] = useState<BlogPost>({ title: '', content: '' })
+  const router = useRouter()
+  // const {data} = useSession()
+  // console.log(data)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.preventDefault()
@@ -13,9 +19,18 @@ const FormNewPost = () => {
     setPost({ ...post, [name]: value })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(post)
+    try {
+      const response = await axios.post('/api/posts', post)
+      if (response.status === 200) {
+        const postId = response.data.newPost.id
+       router.push(`/blog/${postId}`) 
+      }
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
 
   return (

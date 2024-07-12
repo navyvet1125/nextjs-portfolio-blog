@@ -1,8 +1,17 @@
 import React from 'react'
-import { posts } from '@/data/posts'
 import Link from 'next/link'
+import prisma from '@/lib/db'
 
-const BlogList = () => {
+const BlogList = async () => {
+
+  const posts = await prisma.post.findMany({
+    orderBy: {
+      createdAt: 'desc'
+    },
+    include: {
+      author: true,
+    }
+  })
   return (
     <div className='max-w-6xl mx-auto py-8'>
       <h1 className='text-4xl font-bold mb-4'>Blog</h1>
@@ -11,7 +20,7 @@ const BlogList = () => {
           <div key={post.id} className='bg-white p-4 rounded-md shadow-md text-gray-900'>
             <Link href={`/blog/${post.id}`}>
                 <h2 className='text-xl font-bold'>{post.title}</h2>
-                <p className='text-gray-500'>By {post.username}</p>
+                <p className='text-gray-500'>By {post.author.name}</p>
             </Link>
           </div>
         ))}
