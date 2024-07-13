@@ -16,10 +16,10 @@ const FormNewComment: FC<FormNewCommentProps> = ({ postId }) => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    // e.preventDefault()
     if (comment.trim() !== '') {
       try {
-        const newComment = await axios.post('/api/comments', {postId, content: comment})
+        const newComment = await axios.post('/api/comments', {postId, text: comment})
         if (newComment.data.status === 200) {
           router.refresh()
         }

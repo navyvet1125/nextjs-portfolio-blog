@@ -24,8 +24,8 @@ const FormNewPost = () => {
     try {
       const response = await axios.post('/api/posts', post)
       if (response.status === 200) {
-        const postId = response.data.newPost.id
-       router.push(`/blog/${postId}`) 
+        const slug = response.data.newPost.slug
+       router.push(`/blog/${slug}`) 
       }
     }
     catch (error) {

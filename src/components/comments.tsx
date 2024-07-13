@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import prisma from '@/lib/db'
 import { formatDistanceToNow } from 'date-fns';
+// import { getCurrentUser } from '@/lib/session';
 interface CommentsProps {
   postId: string
 }
@@ -29,7 +30,7 @@ const Comments: FC<CommentsProps> = async ({postId}) => {
                 </div>
             </div>
             <p>
-                {comment.content}
+                {comment.text}
             </p>
           </li>
         ))}

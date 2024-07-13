@@ -5,14 +5,14 @@ import  prisma  from '@/lib/db'
 
 interface BlogDetailProps {
   params: {
-    id: string
+    slug: string
   }
 }
 
 const BlogDetail: FC<BlogDetailProps> = async ({ params }) => {
   const post = await prisma.post.findFirst({
     where: {
-      id: params.id
+      slug: params.slug
     },
     include: {
       author: true,
@@ -25,8 +25,8 @@ const BlogDetail: FC<BlogDetailProps> = async ({ params }) => {
         <div className='mt-4'>
             {post?.content}
         </div>
-        <Comments postId={params.id}/>
-        <FormNewComment postId={params.id}/>
+        {post?.id && <Comments postId={post?.id}/>}
+        {post?.id && <FormNewComment postId={post?.id}/>}
     </div>
   )
 }
