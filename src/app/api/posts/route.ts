@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/lib/session";
 import prisma from "@/lib/db";
 import { NextResponse } from "next/server";
+import { Category } from "@prisma/client";
 
 function generateSlug(title: string) {
     return title
@@ -9,6 +10,46 @@ function generateSlug(title: string) {
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
         .replace(/(^-|-$)/g, ''); // Remove leading and trailing hyphens
+}
+
+export async function GET(req: Request) {
+    const url = new URL(req.url);
+    console.log('url:', req.url);
+    let slug  = url.searchParams.get('slug') ?? '';
+    console.log('slug:', slug);
+    let category = url.searchParams.get('category') ?? '';
+    slug = slug.trim(); // sanitize the slug
+    category = category.trim().toUpperCase(); // sanitize the category
+    try {
+        if (!slug) {
+            const where: { [key: string]: any } = {};
+            if (category) {
+
+                where.category = category as Category;
+            }
+    
+            const posts = await prisma.post.findMany({
+                where,
+                include: { author: true },
+                orderBy: { createdAt: 'desc' },
+            });
+            return NextResponse.json({ posts }, { status: 200 });
+        }
+        const post = await prisma.post.findFirst({
+            where: { slug },
+            include: { author: true },
+        });
+
+        if (!post) {
+            return NextResponse.json({ message: 'Post not found!' }, { status: 404 });
+        }
+
+        return NextResponse.json({ post }, { status: 200 });
+    } catch (error) {
+        console.error('Error fetching post:', error);
+        return NextResponse.json({ message: 'Server error.' }, { status: 500 });
+    }
+
 }
 
 export async function POST(req: Request) {

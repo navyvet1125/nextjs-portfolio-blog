@@ -2,13 +2,15 @@
 import React, {useState, FC} from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import { Comment } from '@/types/comment'
 
 interface FormNewCommentProps {
   postId: string
+  onCommentAdded: (comment : Comment) => void
 }
 
-const FormNewComment: FC<FormNewCommentProps> = ({ postId }) => {
-  const [comment, setComment] = useState<string>('')
+const FormNewComment: FC<FormNewCommentProps> = ({ postId, onCommentAdded }) => {
+  const [comment, setComment] = useState<string>('' as Comment['text'])
   const router = useRouter()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,12 +18,14 @@ const FormNewComment: FC<FormNewCommentProps> = ({ postId }) => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    // e.preventDefault()
+    e.preventDefault()
     if (comment.trim() !== '') {
       try {
         const newComment = await axios.post('/api/comments', {postId, text: comment})
-        if (newComment.data.status === 200) {
-          router.refresh()
+        console.log('newComment:', newComment)
+        if (newComment.status === 200) {
+          console.log(newComment.data)
+          onCommentAdded(newComment.data)
         }
       } catch (error) {
         console.error(error)

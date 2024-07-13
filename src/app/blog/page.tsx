@@ -1,17 +1,24 @@
-import React from 'react'
+'use client'
+import React, {useState, useEffect} from 'react'
 import Link from 'next/link'
-import prisma from '@/lib/db'
+import axios from 'axios'
+import { Post } from '@/types/post'
 
-const BlogList = async () => {
-
-  const posts = await prisma.post.findMany({
-    orderBy: {
-      createdAt: 'desc'
-    },
-    include: {
-      author: true,
+const BlogList = () => {
+  const [posts, setPosts] = useState([] as Post[])
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('/api/posts')
+        if (response.status === 200) {
+          setPosts(response.data.posts)
+        }
+      } catch (error) {
+        console.error('Error fetching posts:', error)
+      }
     }
-  })
+    fetchPosts()
+  }, [setPosts])
   return (
     <div className='max-w-6xl mx-auto py-8'>
       <h1 className='text-4xl font-bold mb-4'>Blog</h1>
