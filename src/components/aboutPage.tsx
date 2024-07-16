@@ -11,7 +11,7 @@ const AboutPage: React.FC = () => {
             </h1>
             <div className="prose prose-neutral dark:prose-invert">
                 <Image 
-                    src="/black_kimono30Mar2024.jpg" 
+                    src="/bkimono1.png" 
                     alt="Evan J. Washington" 
                     className="float-left mr-4 mb-4 w-64 h-128 shadow-lg" 
                     width={256}
