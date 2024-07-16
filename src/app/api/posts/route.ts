@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import { NextResponse } from "next/server";
 import { Category } from "@prisma/client";
 
+// Generate a slug from the title
 function generateSlug(title: string) {
     return title
         .normalize("NFD") // Normalize to decomposed form, separating characters from their accents
@@ -12,11 +13,19 @@ function generateSlug(title: string) {
         .replace(/(^-|-$)/g, ''); // Remove leading and trailing hyphens
 }
 
+// Assuming a utility function that trims content to the first N words
+function trimContent(content: string, numberOfWords: number): string {
+    const words = content.split(/\s+/); // Split content into words
+    if (words.length > numberOfWords) {
+        return words.slice(0, numberOfWords).join(' ') + '...';
+    }
+    return content;
+}
+
 export async function GET(req: Request) {
+    // This route is meant to get all posts or a single post
     const url = new URL(req.url);
-    console.log('url:', req.url);
     let slug  = url.searchParams.get('slug') ?? '';
-    console.log('slug:', slug);
     let category = url.searchParams.get('category') ?? '';
     slug = slug.trim(); // sanitize the slug
     category = category.trim().toUpperCase(); // sanitize the category
@@ -30,10 +39,25 @@ export async function GET(req: Request) {
     
             const posts = await prisma.post.findMany({
                 where,
-                include: { author: true },
+                select: { 
+                    id: true,
+                    title: true,
+                    slug: true,
+                    content: true,
+                    createdAt: true,
+                    author: {
+                        select: { name: true }, 
+                    }, 
+                },
                 orderBy: { createdAt: 'desc' },
             });
-            return NextResponse.json({ posts }, { status: 200 });
+            // Trim content to the first 10 words
+            const trimmedPosts = posts.map(post => ({
+                ...post,
+                content: trimContent(post.content, 10) // Assuming we want the first 10 words
+            }));
+
+            return NextResponse.json({ posts: trimmedPosts }, { status: 200 });
         }
         const post = await prisma.post.findFirst({
             where: { slug },

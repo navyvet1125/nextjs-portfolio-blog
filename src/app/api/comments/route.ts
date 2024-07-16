@@ -7,8 +7,6 @@ export async function GET (req: Request ){
     const url = new URL(req.url);
     let postId = url.searchParams.get('postId') ?? '';
     postId = postId.trim(); // sanitize the postId
-    // const { postId } = await req.json();
-    console.log('postId:', postId);
     if (!postId) {
         return NextResponse.json({ message: 'Invalid request body: postId is required.' }, { status: 400 });
     }

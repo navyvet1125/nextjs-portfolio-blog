@@ -30,9 +30,9 @@ const BlogDetail: FC<BlogDetailProps> = ({ params }) => {
 
   return (
     <div className='max-w-4xl mx-auto py-8 '>
-      <h1 className='text-3xl font-bold'>{post?.title}</h1>
-      <p className='text-gray-500'>By {post?.author?.name }</p>
-        <div className='mt-4'>
+      <h1 className='text-3xl font-bold px-4'>{post?.title}</h1>
+      <p className='text-gray-500 px-4'>By {post?.author?.name }</p>
+        <div className='mt-4 px-4'>
             {post.content}
         </div>
         {post.id && <Comments postId={post?.id}/>}

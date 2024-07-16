@@ -24,7 +24,6 @@ const FormNewComment: FC<FormNewCommentProps> = ({ postId, onCommentAdded }) => 
         const newComment = await axios.post('/api/comments', {postId, text: comment})
         console.log('newComment:', newComment)
         if (newComment.status === 200) {
-          console.log(newComment.data)
           onCommentAdded(newComment.data)
         }
       } catch (error) {
