@@ -35,10 +35,10 @@ const LargeHeader = () => {
             <MenuLink href='/' className='hover:underline'>Home</MenuLink>
           </li> 
           <li className='ml-4'>
-            <MenuLink href='#about' className='hover:underline'>About</MenuLink>
+            <MenuLink href='/#about' className='hover:underline'>About</MenuLink>
           </li>
           <li className='ml-4'>
-            <MenuLink href='#skills' className='hover:underline'>Skills</MenuLink>
+            <MenuLink href='/#skills' className='hover:underline'>Skills</MenuLink>
           </li>
           <li className='ml-4'>
             <MenuLink href='/blog' className='hover:underline'>Blog</MenuLink>

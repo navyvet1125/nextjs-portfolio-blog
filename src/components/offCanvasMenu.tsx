@@ -25,8 +25,8 @@ const OffCanvasMenu = () => {
         {/* Menu content */}
         <nav className='text-white'>
           <MenuLink href="/" onClick={() => setIsOpen(false)}>Home</MenuLink>
-          <MenuLink href="#about" onClick={() => setIsOpen(false)}>About</MenuLink>
-          <MenuLink href="/#portfolio" onClick={() => setIsOpen(false)}>Portfolio</MenuLink>
+          <MenuLink href="/#about" onClick={() => setIsOpen(false)}>About</MenuLink>
+          <MenuLink href="/#skills" onClick={() => setIsOpen(false)}>Skills</MenuLink>
           <MenuLink href="/blog" onClick={() => setIsOpen(false)}>Blog</MenuLink>
         </nav>
       </div>
