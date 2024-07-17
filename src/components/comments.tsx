@@ -1,9 +1,12 @@
+'use client';
 import React, { FC, useState, useEffect, use } from 'react'
 import { formatDistanceToNow, set } from 'date-fns';
 import axios from 'axios';
 import { Comment } from '@/types/comment';
 import FormNewComment from '@/components/formNewComment'
 import { useSession, SessionProvider } from 'next-auth/react';
+import { Button } from 'flowbite-react';
+import { FaTrash } from 'react-icons/fa';
 
 // import { getCurrentUser } from '@/lib/session';
 interface CommentsProps {
@@ -41,7 +44,7 @@ const Comments: FC<CommentsProps> = ({postId}) => {
     setCommentCount((prevCount) => prevCount + 1);
   };
 
-  const handleCommentDeleted = async (commentId: string) => {
+  const handleDeleted = async (commentId: string) => {
     const confirmed = confirm('Are you sure you want to delete this comment?');
     if (!confirmed) return;
     try {
@@ -73,16 +76,14 @@ const Comments: FC<CommentsProps> = ({postId}) => {
                   {formatCommentDate(comment.createdAt)}
                 </div>
               </div>
-              <p>
+              <p className='text-gray-800'>
                 {comment.text}
               </p>
             </div>
             {comment.author?.email === session.data?.user?.email && (
-              <button className="ml-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleCommentDeleted(comment.id)}
-              >
-                Delete
-              </button>
+              <Button gradientMonochrome="failure" onClick={() => handleDeleted(comment.id)}>
+                <FaTrash size="16" className="mr-2" /> Delete
+              </Button>
             )}
           </li>
         ))}

@@ -3,6 +3,7 @@ import React, {useState, FC} from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Comment } from '@/types/comment'
+import { Button, Label, TextInput } from 'flowbite-react'
 
 interface FormNewCommentProps {
   postId: string
@@ -34,29 +35,30 @@ const FormNewComment: FC<FormNewCommentProps> = ({ postId, onCommentAdded }) => 
   }
   return (
     <div className='mt-4 '>
-      <form onSubmit={handleSubmit}>
-      <label 
+      <form onSubmit={handleSubmit} >
+      <Label 
         htmlFor="comment" 
-        className='block text-gray-700 text-sm font-bold mb-2'
+        className=' mb-2'
         >
           Add Comment
-        </label>
-      <input 
+        </Label>
+      <TextInput 
         value={comment}
         onChange={handleChange}
         type="text" 
-        className='w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300'
         name='comment'
         id='comment'
         title='Enter your comment here'
         placeholder='Write a comment...'
+        required shadow
         />
-      <button
+      <Button
+        gradientMonochrome='info'
         type='submit'
-        className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mt-2 disabled:bg-gray-400'
+        className='  mt-2'
         >
           Add Comment
-        </button>
+        </Button>
       </form>
     </div>
   )
